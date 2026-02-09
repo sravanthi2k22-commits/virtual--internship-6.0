@@ -1,0 +1,7 @@
+2026-02-09 10:01:15 INFO  UserService: User login successful - user_id=1023
+2026-02-09 10:02:44 WARN  PaymentService: Payment retry initiated - order_id=55021
+2026-02-09 10:03:02 ERROR Database: Connection timeout while accessing orders table
+2026-02-09 10:05:11 INFO  OrderService: New order placed - order_id=55022 amount=1299
+2026-02-09 10:07:45 INFO  EmailService: Confirmation email sent - user_id=1023
+2026-02-09 10:09:01 ERROR AuthService: Invalid token received from IP=192.168.1.15
+2026-02-09 10:10:30 WARN  Server: High memory usage detected - usage=85%
