@@ -1,7 +1,24 @@
-2026-02-09 10:01:15 INFO  UserService: User login successful - user_id=1023
-2026-02-09 10:02:44 WARN  PaymentService: Payment retry initiated - order_id=55021
-2026-02-09 10:03:02 ERROR Database: Connection timeout while accessing orders table
-2026-02-09 10:05:11 INFO  OrderService: New order placed - order_id=55022 amount=1299
-2026-02-09 10:07:45 INFO  EmailService: Confirmation email sent - user_id=1023
-2026-02-09 10:09:01 ERROR AuthService: Invalid token received from IP=192.168.1.15
-2026-02-09 10:10:30 WARN  Server: High memory usage detected - usage=85%
+2026-02-10 09:00:01 INFO    AuthService        User login successful: user_id=1023
+2026-02-10 09:01:12 INFO    OrderService       Order created: order_id=55021
+2026-02-10 09:02:44 WARNING PaymentService     Payment retry initiated: order_id=55021
+2026-02-10 09:03:05 INFO    PaymentService     Payment successful: order_id=55021
+2026-02-10 09:05:17 INFO    InventoryService   Stock updated: product_id=P778 qty=45
+2026-02-10 09:06:22 ERROR   EmailService       Email delivery failed: user_id=1023
+2026-02-10 09:07:40 INFO    EmailService       Email re-sent successfully: user_id=1023
+2026-02-10 09:09:03 INFO    AuthService        Password reset requested: user_id=1102
+2026-02-10 09:10:21 INFO    NotificationSvc    Push notification sent: user_id=1102
+2026-02-10 09:12:05 WARNING APIGateway         High response time detected: 1.8s
+2026-02-10 09:13:16 INFO    OrderService       Order shipped: order_id=55021
+2026-02-10 09:14:29 INFO    TrackingService    Shipment tracking updated: order_id=55021
+2026-02-10 09:15:41 ERROR   DatabaseService    Connection timeout detected
+2026-02-10 09:16:02 INFO    DatabaseService    Connection restored
+2026-02-10 09:17:33 INFO    UserService        Profile updated: user_id=1321
+2026-02-10 09:18:54 WARNING SecurityService    Multiple login attempts detected: user_id=2001
+2026-02-10 09:19:12 INFO    SecurityService    Account temporarily locked: user_id=2001
+2026-02-10 09:20:08 INFO    AuthService        User logout successful: user_id=1023
+2026-02-10 09:22:26 INFO    ReportService      Daily sales report generated
+2026-02-10 09:23:31 INFO    BackupService      Incremental backup completed
+2026-02-10 09:24:10 ERROR   PaymentService     Payment gateway unavailable
+2026-02-10 09:24:55 INFO    PaymentService     Gateway connection re-established
+2026-02-10 09:26:17 INFO    InventoryService   Low stock alert: product_id=P902 qty=5
+2026-02-10 09:27:40 INFO    MonitoringService  System health check passed
