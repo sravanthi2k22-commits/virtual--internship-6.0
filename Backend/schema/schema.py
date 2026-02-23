@@ -3,8 +3,8 @@
 #1. it ensures all rows follows the same structure and type of data 
 #2. it helps in data validation and data cleaning .
 #3. faster processing , easier analytics (flitering , mapping,grouping,anomaly detection becomes simple and faster)    
-log_schema = {
-"timestamp": "datetime",
+LOG_SCHEMA = {
+"timestamp": "datetime64[ns]",
 "level": "string",
 "service": "string",
 "message": "string",

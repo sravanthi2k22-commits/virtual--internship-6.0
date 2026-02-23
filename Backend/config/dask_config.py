@@ -1,5 +1,5 @@
 from dask.distributed import Client, LocalCluster
-def create_dask_client():
+def start_dask():
     cluster = LocalCluster(
         n_workers=4,
         threads_per_worker=2,
