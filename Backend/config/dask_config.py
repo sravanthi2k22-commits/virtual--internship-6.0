@@ -6,4 +6,5 @@ def start_dask():
         memory_limit='1GB',
         dashboard_address=":8790"
     )
+
     return Client(cluster)

@@ -22,10 +22,10 @@
 # }
 
 import dask.dataframe as dd
-from backend.injection.parser import parse_log_line
-from backend.injection.loader import load_logs
+from backend.ingection.parser import parse_log_line
+from backend.ingection.loader import load_logs
 
-def process_pipeline(file_path):
+def build_pipeline(file_path):
     bag=load_logs(file_path)
     parsed = (
         bag.map(parse_log_line)

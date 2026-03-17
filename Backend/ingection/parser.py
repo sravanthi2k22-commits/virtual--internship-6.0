@@ -1,4 +1,4 @@
-import re #to work with regular expressions
+#to work with regular expressions
 
 # LOG_PATTERN = re.compile(
 #     r"(?P<timestamp>[\d\-:\s]+)\s"
@@ -19,7 +19,7 @@ import re #to work with regular expressions
 #     }
 
 from datetime import datetime #import datetime is a module.
-
+import re 
 LOG_PATTERN = re.compile(
     r'(?P<timestamp>\S+ \S+)\s+'
     r'(?P<level>\S+)\s+'

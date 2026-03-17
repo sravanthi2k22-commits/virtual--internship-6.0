@@ -1,36 +1,54 @@
-#from backend.config.data_config import create_dask_client
-'''def main():
-    client = create_dask_client()
-    print(client)
-    print(f"Dashboard: {client.dashboard_link}")
-    print("Cluster running...")
-if __name__ == "__main__":
-    main()'''
-from datetime import time
-
+import time
 from backend.config.dask_config import start_dask
-from backend.ingection.loader import load_logs
-#from processing.pipeline import build_pipeline
-
+from backend.pipeline.processing import build_pipeline
+from backend.anomaly.detection import detect_anamoly
+from backend.config.email_alert import send_anomaly_email
 
 def main():
-    print("Starting Log Processing...")
     client = start_dask()
-    print("Dask Started Successfully")
+    print(client)
+    print(f"Dashboard link: {client.dashboard_link}")
+    print("\n" + "=" * 50)
+    start = time.time()
+    # Build log processing pipeline
+    log_df = build_pipeline(r"D:\log-analytics-monitoring-engine\backend\Log_data.log")
+    print("Parsed Log Data (Table Format):")
+    print(log_df.compute())
+    # Correct way to count rows
+    total_logs = log_df.shape[0].compute()
+    end = time.time()
+    print("Total logs parsed:", total_logs)
+    print("Time taken:", round(end - start, 2), "seconds")
+    print("\nRunning anomaly detection...")
+    # Detect anomalies
+    anomalies = detect_anamoly(log_df)
+    # If still a Dask dataframe convert to pandas
+    if hasattr(anomalies, "compute"):
+        anomalies = anomalies.compute()
+    if anomalies.empty:
+        print("No anomalies detected")
+    else:
+        print(f"🚨 {len(anomalies)} anomalies detected!")
 
-    df = load_logs("D:\\log-analytics-monitoring-engine\\backend\\Log_data.log")
-    print("Logs Loaded Successfully")
+        for minute, row in anomalies.iterrows():
+            anomaly_data = {
+                "timestamp": minute,
+    "error_count": row.get("error_count", 0),
+    "z_score": row.get("z_score", 0)
+            }
+            send_anomaly_email(
+sender_email="saipatelmudam@gmail.com",
+password="lgxu zsds fgdq pgzx",
+ to_email="saikumarpatel35@gmail.com",
+anomaly=anomaly_data
+    )
 
-    print("\nFirst 5 Parsed Logs:")
-    print(df.head())
+            print(
+                f"Alert | Time: {minute} | "
+                f"Errors: {row.get('error_count')}"
+            )
 
-    print("\nLog Count by Level:")
-    result = df.count().compute()
-    print(result)
-
-    input("Press Enter to stop the cluster...")  # keep cluster alive
-    client.close()
-    print("\nProcessing Finished Successfully!")
+    input("\nPress Enter to exit...")
 
 
 if __name__ == "__main__":
