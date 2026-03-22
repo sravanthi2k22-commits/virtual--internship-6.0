@@ -23,7 +23,10 @@ def detect_anamoly(log_df, z_threshold=3):
     std = error_counts["error_count"].std().compute()
 
     if std == 0:
-        return error_counts.compute()
+         result = error_counts.compute()
+         result["is_anomaly"] = True   # flag all as anomalies when std is 0
+         result["z_score"] = 0
+         return result
 
     error_counts["anomaly_score"] = (error_counts["error_count"] - mean) / std
     error_counts["is_anomaly"] = error_counts["anomaly_score"].abs() > z_threshold

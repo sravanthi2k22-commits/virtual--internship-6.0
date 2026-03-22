@@ -11,7 +11,7 @@ def main():
     print("\n" + "=" * 50)
     start = time.time()
     # Build log processing pipeline
-    log_df = build_pipeline(r"D:\log-analytics-monitoring-engine\backend\Log_data.log")
+    log_df = build_pipeline(r"D:\log-analytics-monitoring-engine\backend\sample_log\data_log.log")
     print("Parsed Log Data (Table Format):")
     print(log_df.compute())
     # Correct way to count rows
@@ -29,7 +29,7 @@ def main():
         print("No anomalies detected")
     else:
         print(f"🚨 {len(anomalies)} anomalies detected!")
-
+        
         for minute, row in anomalies.iterrows():
             anomaly_data = {
                 "timestamp": minute,
@@ -37,9 +37,9 @@ def main():
     "z_score": row.get("z_score", 0)
             }
             send_anomaly_email(
-sender_email="saipatelmudam@gmail.com",
-password="lgxu zsds fgdq pgzx",
- to_email="saikumarpatel35@gmail.com",
+sender_email="",
+password="",
+ to_email="",
 anomaly=anomaly_data
     )
 
