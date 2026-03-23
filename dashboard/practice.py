@@ -1,55 +1,56 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-file = st.file_uploader("Upload file")
-day = st.selectbox("Select day", [
-    "Monday", "Tuesday", "Wednesday",
-    "Thursday", "Friday", "Saturday", "Sunday"
-])
-st.write("Selected day:", day)
-st.title("log analytics monitoring engine")
-st.header("This is a header")
-st.subheader("This is a subheader")
-st.text("This is some text")
-st.markdown("This is **markdown** text with *emphasis* and [a link](https://www.google.com).")
-st.button("Click me")
-st.checkbox("Check me")
-st.radio("Choose an option", ["Option 1", "Option 2", "Option 3"])
-st.selectbox("Select an option", ["Option A", "Option B", "Option C"])
-st.multiselect("Select multiple options", ["Option X", "Option Y", "Option Z"])
-st.slider("Select a value", 0, 100, 50)
-st.table({"Column 1": [1, 2, 3], "Column 2": ["A", "B", "C"]})
-
+# Sample Data 
 data = {
     "minute": [
         "10:00", "10:01", "10:02", "10:03", "10:04",
         "10:05", "10:06", "10:07", "10:08", "10:09"
     ],
-    "error_count": [
-        5, 7, 6, 8, 50, 9, 6, 55, 7, 8
-    ],  # spikes = anomalies
+    "error_count": [5, 7, 6, 8, 50, 9, 6, 55, 7, 8],  
     "service": [
         "auth", "payment", "inventory", "shipping", "user",
         "orders", "auth", "payment", "inventory", "shipping"
     ]
 }
-import pandas as pd
-import plotly.express as px
 
 df = pd.DataFrame(data)
-df["is_anomaly"] = df["error_count"] > 30
-st.subheader("Error Trend")
 
-fig_line = px.line(df, x="minute", y="error_count", title="Errors Over Time")
-anomalies = df[df["is_anomaly"]]
+# Anomalies = error count above 30
+anomalies = df[df["error_count"] > 30]
 
+#1. Line Chart – Error Trend 
+fig_line = px.line(df, x="minute", y="error_count", title="Error Trend – Errors Over Time")
 fig_line.add_scatter(
     x=anomalies["minute"],
     y=anomalies["error_count"],
     mode="markers",
     name="Anomalies"
 )
-
 st.plotly_chart(fig_line)
-fig = px.line(df, x="minute", y="error_count", color="service", title="Error Count Over Time by Service")
-st.plotly_chart(fig)
-         
+
+#  2. Bar Chart – Errors per Minute
+fig_bar = px.bar(
+df, x="minute", y="error_count", color="error_count", title="Bar Chart  Error Count per Minute")
+st.plotly_chart(fig_bar)
+
+#3. Scatter Plot – Anomaly Detection 
+fig_scatter = px.scatter(df, x="minute", y="error_count", color="error_count", size="error_count", title="Scatter Plot  Anomaly Detection")
+fig_scatter.add_scatter(x=anomalies["minute"], y=anomalies["error_count"], mode="markers", marker=dict(size=12, color="red"), name="Anomalies")
+st.plotly_chart(fig_scatter)
+
+# 4. Pie Chart – Error Share by Service 
+service_errors = df.groupby("service")["error_count"].sum().reset_index()
+fig_pie = px.pie(
+    service_errors,
+    names="service", values="error_count",
+    title="Pie Chart Error Distribution by Service"
+)
+st.plotly_chart(fig_pie)
+
+# 5. Heatmap – Error Intensity 
+df["minute"] = pd.to_datetime(df["minute"], format="%H:%M")
+heatmap_data = df.pivot_table(values="error_count", index="service", columns="minute")
+fig_heatmap = px.imshow(heatmap_data, aspect="auto", title="Heatmap  Error Intensity by Service & Time")
+st.plotly_chart(fig_heatmap)
