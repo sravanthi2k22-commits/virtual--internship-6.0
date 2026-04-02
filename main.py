@@ -1,7 +1,7 @@
 import time
 from backend.config.dask_config import start_dask
 from backend.pipeline.processing import build_pipeline
-from backend.anomaly.detection import detect_anomalies
+from backend.anomaly.detection import detect_anomaly
 from backend.config.email_alert import send_anomaly_email
 
 
@@ -31,7 +31,7 @@ def main():
     print("\nRunning anomaly detection...")
 
     # Detect anomalies
-    anomalies = detect_anomalies(log_df)
+    anomalies = detect_anomaly(log_df)
 
     # Convert Dask dataframe to Pandas if needed
     if hasattr(anomalies, "compute"):
