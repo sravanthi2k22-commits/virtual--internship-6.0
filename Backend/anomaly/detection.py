@@ -2,7 +2,7 @@
 
 import dask.dataframe as dd
 
-def detect_anomalies(log_df, z_threshold=3):
+def detect_anomaly(log_df, z_threshold=3):
 
     log_df["timestamp"] = dd.to_datetime(log_df["timestamp"])
 
